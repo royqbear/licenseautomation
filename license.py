@@ -48,8 +48,8 @@ class Window:
             print("cannot load website, refreshing")
         else:
             driver.get("https://shop.cms1.co.il/login/")
-        username = "purchasing@zomet.com"
-        password = "!QA1qa1qa"
+        username = "******"
+        password = "*****"
 
         login_user = driver.find_element(By.NAME, "fld-login-username")
         login_user.send_keys(username)
@@ -74,8 +74,8 @@ class Window:
         options.add_argument('--headless')
         driver = webdriver.Chrome(options=options)
         driver.get("https://shop.cms1.co.il/login/")
-        username = "purchasing@zomet.com"
-        password = "!QA1qa1qa"
+        username = "*****"
+        password = "*****"
 
         login_user = driver.find_element(By.NAME, "fld-login-username")
         login_user.send_keys(username)
@@ -142,8 +142,8 @@ class Window:
         except Exception:
             messagebox.showerror("Version update required", 'Please update Chronium')
         driver.get("https://shop.cms1.co.il/login/")
-        username = "purchasing@zomet.com"
-        password = "!QA1qa1qa"
+        username = "******"
+        password = "******"
 
         login_user = driver.find_element(By.NAME, "fld-login-username")
         login_user.send_keys(username)
