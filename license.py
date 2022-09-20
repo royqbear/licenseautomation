@@ -7,6 +7,7 @@ import tkinter.font as font
 from tkinter import ttk
 from tkinter import messagebox
 from time import sleep
+from time import sleep
 import os
 
 class Window:
@@ -28,12 +29,17 @@ class Window:
         self.btn = Button(self.frame2, text='Submit', command=self.button_methods)
         # self.btn = Button(self.frame2, text='Submit', command=lambda: [self.list_pick(), self.get_user_input(), self.get_spinbox()])
 
-        self.buy_cancel = ttk.Combobox(self.frame2, values=self.choices)
-        self.user_input = Entry(self.frame2)
+        self.buy_cancel = ttk.Combobox(self.frame2, values=self.choices,width=20)
+        self.buy_cancel.current(0)
+        self.user_input = Entry(self.frame2,width=30)
         self.userIn_label = Label(self.frame2, text="Enter name for the license",background=self.background)
         self.buy_cancel_label = Label(self.frame2, text="Doy you want to Buy or Cancel?",background=self.background)
         self.mainlabel = Label(self.frame, text="Choose company please",background=self.background)
-        self.numeric = Spinbox(self.frame2, from_=0, to_=100)
+        self.numeric = Spinbox(self.frame2, from_=1, to_=100, width=10)
+
+        self.userIn_label.grid(row=3, column=0, pady=5)
+        self.user_input.grid(row=4, column=0, pady=5)
+
 
 #getting the list of licenses from the website, based on user name entered
     def scrap(self):
@@ -48,8 +54,8 @@ class Window:
             print("cannot load website, refreshing")
         else:
             driver.get("https://shop.cms1.co.il/login/")
-        username = "******"
-        password = "*****"
+        username = "*******"
+        password = "*******"
 
         login_user = driver.find_element(By.NAME, "fld-login-username")
         login_user.send_keys(username)
@@ -74,8 +80,8 @@ class Window:
         options.add_argument('--headless')
         driver = webdriver.Chrome(options=options)
         driver.get("https://shop.cms1.co.il/login/")
-        username = "*****"
-        password = "*****"
+        username = "********"
+        password = "********"
 
         login_user = driver.find_element(By.NAME, "fld-login-username")
         login_user.send_keys(username)
@@ -142,8 +148,8 @@ class Window:
         except Exception:
             messagebox.showerror("Version update required", 'Please update Chronium')
         driver.get("https://shop.cms1.co.il/login/")
-        username = "******"
-        password = "******"
+        username = "*******"
+        password = "*******"
 
         login_user = driver.find_element(By.NAME, "fld-login-username")
         login_user.send_keys(username)
@@ -211,13 +217,13 @@ class Window:
     # deal with user input if to show or not based on the dropbox input
     def user_input_if(self, e):
         user_inp = self.buy_cancel.get()
-        if user_inp == "Buy":
+        if user_inp == "Cancel":
+            self.hide_input()
+        elif user_inp == "Buy":
             self.userIn_label.grid(row=3, column=0, pady=10)
             self.user_input.grid(row=4, column=0, pady=10)
-        elif user_inp == "Cancel":
-            self.hide_input()
         else:
-            messagebox.showwarning(title="OH OH !", text="You need to choose option(Buy or Cancel)")
+            messagebox.showwarning("OH OH !", "You need to choose option(Buy or Cancel)")
 # approve action complete
     def button_popup(self):
         messagebox.showinfo("Done!", "Operation successful")
@@ -231,6 +237,7 @@ class Window:
         company_name = self.company_list.get(ANCHOR)
         if company_name not in self.companies:
             messagebox.showerror("Selection Error", "Please select company")
+            return False
         else:
             print(company_name)
             return self.companies.index(company_name)+1
@@ -261,10 +268,12 @@ class Window:
 
 #like driver code for the submit button.
     def button_methods(self):
-        self.list_pick()
-        self.get_user_input()
-        self.get_spinbox()
-        self.pick_buy_cancel()
+        if not self.list_pick():
+            pass
+        else:
+            self.get_user_input()
+            self.get_spinbox()
+            self.pick_buy_cancel()
 
 
 
@@ -304,6 +313,7 @@ class Login:
         if user_from_input == useros and pass_from_input == userpassos:
             messagebox.showinfo("Login Success", "Welcome\nApp is loading, wait a moment.\n:) :) :)")
             print("good")
+            self.close_login_window()
             app = Window()
             app.app()
         else:
