@@ -28,9 +28,11 @@ class Window:
 
         # creating webdriver for chrome
         try:
-            self.options = webdriver.ChromeOptions()
+             self.options = webdriver.ChromeOptions()
             self.options.add_argument('--headless')
-            self.driver = webdriver.Chrome(options=self.options)
+            self.chrome_service = ChromeService('chromedriver')
+            self.chrome_service.creationflags = CREATE_NO_WINDOW
+            self.driver = webdriver.Chrome(options=self.options,service=self.chrome_service)
             self.session_id = self.driver.session_id
         except Exception:
             messagebox.showerror("Version update required",
@@ -231,10 +233,9 @@ class Window:
     def pick_buy_cancel(self):
         if self.buy_cancel.get() == "Buy":
             self.buy_lic()
-            print("this is buying code")
+            
 
         elif self.buy_cancel.get() == "Cancel":
-            print("line 107 Cancel scrap code")
             self.cancel_license_scrap()
 
 #user input for new license
